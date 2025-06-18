@@ -1,0 +1,136 @@
+generators:
+  pollo:
+    time: 20
+    price: 1000
+    repair: 1250
+    item:
+      head: ""
+      displayname: "&fGenerador de &f&lPOLLO"
+      lore:
+        - "&8Información"
+        - ""
+        - "&6&lESTADISTICAS"
+        - "&fTiempo&7: &e%time% segundos"
+        - "&fMejora&7: &a$%upgrade%"
+        - "&fReparación&7: &c$%repair%"
+        - "&fPrecio&7: &a$%price%"
+        - ""
+        - "&6&lDROPS"
+        - "&fPollo&7: &a$250"
+        - "&fPluma&7: &a$500"
+        - ""
+        - "&7Coloca este generador para comenzar."
+      material: "GLASS"
+    drops:
+      pollo:
+        item:
+          head: "http://textures.minecraft.net/texture/4e8f3ea46735ad0c106c549ccb6cd489c97a41e73d092497ee424becd9dfd29c"
+          displayname: "&f&lPollo"
+          lore:
+            - "&8Información"
+            - ""
+            - "&fVende este objeto para"
+            - "&fobtener dinero."
+            - ""
+            - "&6&lPRECIO DE VENTA"
+            - "&fPrecio&7: &a$%price%"
+          material: "PLAYER_HEAD"
+        price: 250
+        chance:
+          spawn: 80
+          enchanted: 25
+          glow: 25
+        glow-color:
+          red: 255
+          green: 0
+          blue: 0
+      pluma:
+        item:
+          head: ""
+          displayname: "&f&lPluma"
+          lore:
+            - "&8Información"
+            - ""
+            - "&fVende este objeto para"
+            - "&fobtener dinero."
+            - ""
+            - "&6&lPRECIO DE VENTA"
+            - "&fPrecio&7: &a$%price%"
+          material: "FEATHER"
+        price: 500
+        chance:
+          spawn: 20
+          enchanted: 25
+          glow: 25
+        glow-color:
+          red: 255
+          green: 0
+          blue: 0
+  conejo:
+    time: 20
+    price: 4000
+    upgrade: 2500
+    repair: 5000
+    item:
+      head: ""
+      displayname: "&fGenerador de &#8c826b&lCONEJO"
+      lore:
+        - "&8Información"
+        - ""
+        - "&6&lESTADISTICAS"
+        - "&fTiempo&7: &e%time% segundos"
+        - "&fMejora&7: &a$%upgrade%"
+        - "&fReparación&7: &c$%repair%"
+        - "&fPrecio&7: &a$%price%"
+        - ""
+        - "&6&lDROPS"
+        - "&fConejo&7: &a$500"
+        - "&fPiel de conejo&7: &a$1000"
+        - ""
+        - "&7Coloca este generador para comenzar."
+      material: "LIGHT_GRAY_STAINED_GLASS"
+    drops:
+      conejo:
+        item:
+          head: "http://textures.minecraft.net/texture/3d2719271c714980226ff1bef4cbb1d54411ce3a914d7df731bcc7f61e94e5c"
+          displayname: "&#8c826b&lConejo"
+          lore:
+            - "&8Información"
+            - ""
+            - "&fVende este objeto para"
+            - "&fobtener dinero."
+            - ""
+            - "&6&lPRECIO DE VENTA"
+            - "&fPrecio&7: &a$%price%"
+          material: "PLAYER_HEAD"
+        price: 500
+        chance:
+          spawn: 80
+          enchanted: 25
+          glow: 25
+        glow-color:
+          red: 255
+          green: 0
+          blue: 0
+      piel_de_conejo:
+        item:
+          head: ""
+          displayname: "&#8c826b&lPiel de conejo"
+          lore:
+            - "&8Información"
+            - ""
+            - "&fVende este objeto para"
+            - "&fobtener dinero."
+            - ""
+            - "&6&lPRECIO DE VENTA"
+            - "&fPrecio&7: &a$%price%"
+          material: "RABBIT_HIDE"
+        price: 1000
+        chance:
+          spawn: 20
+          enchanted: 25
+          glow: 25
+        glow-color:
+          red: 255
+          green: 0
+          blue: 0

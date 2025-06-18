@@ -1,0 +1,51 @@
+generator-system:
+  starting-generators: 30
+  break-chance: 0.1
+  break-generation: 1000
+  drop-multiplier:
+    glow: 25
+    enchanted: 50
+  slots:
+    1:
+      head: ""
+      displayname: "&fSlots &a&l+1"
+      lore:
+        - "&8Objeto canjeable"
+        - ""
+        - "&fPodrás incrementar los espacios"
+        - "&fdisponibles para poner generadores."
+        - ""
+        - "&e¡Haz clic derecho para canjear!"
+      material: "EMERALD"
+      enchanted: true
+  multipliers:
+    multiplier0_1:
+      item:
+        head: ""
+        displayname: "&fMultiplicador &6&lx0.1"
+        lore:
+          - "&8Objeto canjeable"
+          - ""
+          - "&fPodrás incrementar las ganancias al"
+          - "&fvender objetos de tus generadores."
+          - ""
+          - "&e¡Haz clic derecho para canjear!"
+        material: "GOLD_INGOT"
+        enchanted: true
+      multiplier: 0.1
+event-system:
+  event-time: 600
+  events:
+    double_value:
+      name: "x2 Valor"
+      duration: 60
+    double_speed:
+      name: "x2 Velocidad"
+      duration: 60
+      speed: 0.3
+    double_enchanted_chance:
+      name: "x2 Probabilidad Encantada"
+      duration: 60
+    double_glow_chance:
+      name: "x2 Probabilidad Brillante"
+      duration: 60

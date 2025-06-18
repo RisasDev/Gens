@@ -1,0 +1,16 @@
+name: ZurixGens
+version: '1.0-SNAPSHOT'
+main: dev.risas.zurixgens.ZurixGens
+api-version: '1.13'
+author: Risas
+depend: [Vault]
+commands:
+  generator:
+    description: "Generator Command"
+    aliases: ["gen", "gens"]
+  sell:
+    description: "Sell Command"
+    aliases: ["sellall"]
+  statistic:
+    description: "Statistic Command"
+    aliases: ["stats", "stat", "statistics", "estadisticas"]
