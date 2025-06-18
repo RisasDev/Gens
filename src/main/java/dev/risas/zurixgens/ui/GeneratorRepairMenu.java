@@ -4,6 +4,7 @@ import dev.risas.zurixgens.controllers.EconomyController;
 import dev.risas.zurixgens.controllers.GeneratorController;
 import dev.risas.zurixgens.models.generator.GeneratorPlayer;
 import dev.risas.zurixgens.ui.buttons.GeneratorRepairButton;
+import dev.risas.zurixgens.utilities.FileConfig;
 import dev.risas.zurixgens.utilities.menu.Button;
 import dev.risas.zurixgens.utilities.menu.Menu;
 import org.bukkit.entity.Player;
@@ -18,6 +19,7 @@ import java.util.Map;
  */
 public class GeneratorRepairMenu extends Menu {
 
+    private final FileConfig languageFile;
     private final GeneratorPlayer generatorPlayer;
     private final GeneratorController generatorController;
     private final EconomyController economyController;
@@ -25,6 +27,7 @@ public class GeneratorRepairMenu extends Menu {
     public GeneratorRepairMenu(
             Player player,
             GeneratorPlayer generatorPlayer,
+            FileConfig languageFile,
             GeneratorController generatorController,
             EconomyController economyController) {
         super(
@@ -32,6 +35,7 @@ public class GeneratorRepairMenu extends Menu {
                 "Generator Repair",
                 1
         );
+        this.languageFile = languageFile;
         this.generatorPlayer = generatorPlayer;
         this.generatorController = generatorController;
         this.economyController = economyController;
@@ -41,7 +45,7 @@ public class GeneratorRepairMenu extends Menu {
     public Map<Integer, Button> getButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
 
-        buttons.put(getSize() - 5, new GeneratorRepairButton(generatorPlayer, generatorController, economyController));
+        buttons.put(getSize() - 5, new GeneratorRepairButton(generatorPlayer, languageFile, generatorController, economyController));
 
         return buttons;
     }

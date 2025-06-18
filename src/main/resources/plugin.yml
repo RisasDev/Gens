@@ -1,5 +1,5 @@
 name: ZurixGens
-version: '1.0-SNAPSHOT'
+version: ${project.version}
 main: dev.risas.zurixgens.ZurixGens
 api-version: '1.13'
 author: Risas

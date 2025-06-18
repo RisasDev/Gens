@@ -6,6 +6,7 @@ import dev.risas.zurixgens.models.generator.Generator;
 import dev.risas.zurixgens.models.generator.GeneratorPlayer;
 import dev.risas.zurixgens.utilities.ChatUtil;
 import dev.risas.zurixgens.utilities.CurrencyUtil;
+import dev.risas.zurixgens.utilities.FileConfig;
 import dev.risas.zurixgens.utilities.ItemBuilder;
 import dev.risas.zurixgens.utilities.menu.Button;
 import org.bukkit.entity.Player;
@@ -20,13 +21,16 @@ import org.bukkit.inventory.ItemStack;
 public class GeneratorRepairButton extends Button {
 
     private final GeneratorPlayer generatorPlayer;
+    private final FileConfig languageFile;
     private final GeneratorController generatorController;
     private final EconomyController economyController;
 
     public GeneratorRepairButton(
             GeneratorPlayer generatorPlayer,
+            FileConfig languageFile,
             GeneratorController generatorController,
             EconomyController economyController) {
+        this.languageFile = languageFile;
         this.generatorPlayer = generatorPlayer;
         this.generatorController = generatorController;
         this.economyController = economyController;
@@ -54,10 +58,11 @@ public class GeneratorRepairButton extends Button {
 
         if (economyController.hasNotBalance(player, repairCost)) {
             playFailure(player);
-            ChatUtil.sendMessage(player, new String[]{
-                    "&cNo tienes suficiente dinero para reparar este generator.",
-                    "&cNecesitas $" + CurrencyUtil.format(repairCost) + " para repararlo.",
-            });
+
+            for (String message : languageFile.getStringList("generator-message.repair.not-balance")) {
+                ChatUtil.sendMessage(player, message
+                        .replace("%repair-cost%", CurrencyUtil.format(repairCost)));
+            }
             return;
         }
 
@@ -68,7 +73,7 @@ public class GeneratorRepairButton extends Button {
         generatorController.saveGeneratorPlayer(generatorPlayer, false);
 
         economyController.removeBalance(player, repairCost);
-        ChatUtil.sendMessage(player, "&a¡Generator reparado exitosamente!");
+        ChatUtil.sendMessage(player, languageFile.getString("generator-message.repair.repaired"));
     }
 
     @Override

@@ -8,6 +8,14 @@ generator-message:
   not-enough-balance: "&6&lGENERATORS &8» &cNo tienes el balance suficiente para mejorar este generador. ($%balance%/$%price%)"
   consume-slot-item: "&6&lGENERATORS &8» &fHas incrementado tu limite de generadores a &a%max-generators% &fgeneradores."
   consume-multiplier-item: "&6&lGENERATORS &8» &fHas incrementado tu multiplicador de ventas &ex%multiplier%&f."
+  purchase:
+    not-balance: "&cNo tienes suficiente dinero para comprar este generador."
+    bought: "&fCompraste un generador &e%generator-displayname% &fpor &a$%generator-price%&f."
+  repair:
+    not-balance:
+      - "&cNo tienes suficiente dinero para reparar este generator."
+      - "&cNecesitas $%repair-cost% para repararlo."
+    repaired: "&a¡Generator reparado exitosamente!"
 
 sell-message:
   nothing-to-sell: "&6&lGENERATORS &8» &cNo tienes objetos de generadores para vender."

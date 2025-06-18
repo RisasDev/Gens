@@ -6,6 +6,7 @@ import dev.risas.zurixgens.controllers.GeneratorController;
 import dev.risas.zurixgens.controllers.UserController;
 import dev.risas.zurixgens.ui.GeneratorMenu;
 import dev.risas.zurixgens.utilities.ChatUtil;
+import dev.risas.zurixgens.utilities.FileConfig;
 import dev.risas.zurixgens.utilities.command.SubCommand;
 import dev.risas.zurixgens.utilities.command.SubCommandHelper;
 import org.bukkit.command.Command;
@@ -28,19 +29,26 @@ import java.util.stream.Stream;
  */
 public class GeneratorCommand implements CommandExecutor, TabCompleter {
 
+    private final FileConfig languageFile;
     private final UserController userController;
     private final GeneratorController generatorController;
     private final EconomyController economyController;
 
     private final Map<String, SubCommand> subCommands;
 
-    public GeneratorCommand(ZurixGens plugin, UserController userController, GeneratorController generatorController, EconomyController economyController) {
+    public GeneratorCommand(
+            ZurixGens plugin,
+            FileConfig languageFile,
+            UserController userController,
+            GeneratorController generatorController,
+            EconomyController economyController) {
         this.subCommands = SubCommandHelper.of(
                 Map.entry("give", new GeneratorGiveCommand(generatorController)),
                 Map.entry("list", new GeneratorListCommand(generatorController)),
                 Map.entry("item", new GeneratorItemCommand(generatorController)),
                 Map.entry("reload", new GeneratorReloadCommand(plugin))
         );
+        this.languageFile = languageFile;
         this.userController = userController;
         this.generatorController = generatorController;
         this.economyController = economyController;
@@ -50,7 +58,7 @@ public class GeneratorCommand implements CommandExecutor, TabCompleter {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 0) {
             if (sender instanceof Player player) {
-                GeneratorMenu menu = new GeneratorMenu(player, userController, generatorController, economyController);
+                GeneratorMenu menu = new GeneratorMenu(player, languageFile, userController, generatorController, economyController);
                 menu.open();
                 return true;
             }

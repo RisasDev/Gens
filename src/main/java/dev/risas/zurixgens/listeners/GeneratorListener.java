@@ -219,7 +219,7 @@ public class GeneratorListener implements Listener {
         }
 
         if (generatorPlayer.isBroken()) {
-            GeneratorRepairMenu menu = new GeneratorRepairMenu(player, generatorPlayer, generatorController, economyController);
+            GeneratorRepairMenu menu = new GeneratorRepairMenu(player, generatorPlayer, languageFile, generatorController, economyController);
             menu.open();
             return;
         }

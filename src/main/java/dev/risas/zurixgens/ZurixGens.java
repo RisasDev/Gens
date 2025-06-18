@@ -40,10 +40,10 @@ public class ZurixGens extends JavaPlugin {
         PluginManager pluginManager = getServer().getPluginManager();
         pluginManager.registerEvents(new UserListener(userController), this);
         pluginManager.registerEvents(new MenuListener(), this);
-        pluginManager.registerEvents(new GeneratorListener(this, configFile, userController, generatorController, economyController, eventController), this);
+        pluginManager.registerEvents(new GeneratorListener(this, configFile, languageFile, userController, generatorController, economyController, eventController), this);
 
-        this.getCommand("generator").setExecutor(new GeneratorCommand(this, userController, generatorController, economyController));
-        this.getCommand("generator").setTabCompleter(new GeneratorCommand(this, userController, generatorController, economyController));
+        this.getCommand("generator").setExecutor(new GeneratorCommand(this, languageFile, userController, generatorController, economyController));
+        this.getCommand("generator").setTabCompleter(new GeneratorCommand(this, languageFile, userController, generatorController, economyController));
         this.getCommand("sell").setExecutor(new SellCommand(configFile, languageFile, userController, economyController, eventController));
         this.getCommand("statistic").setExecutor(new StatisticCommand(languageFile, userController));
 

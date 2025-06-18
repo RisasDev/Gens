@@ -6,6 +6,8 @@ import dev.risas.zurixgens.controllers.UserController;
 import dev.risas.zurixgens.models.generator.Generator;
 import dev.risas.zurixgens.models.user.User;
 import dev.risas.zurixgens.utilities.ChatUtil;
+import dev.risas.zurixgens.utilities.CurrencyUtil;
+import dev.risas.zurixgens.utilities.FileConfig;
 import dev.risas.zurixgens.utilities.ItemBuilder;
 import dev.risas.zurixgens.utilities.menu.Button;
 import org.bukkit.entity.Player;
@@ -22,15 +24,18 @@ import java.util.List;
 public class GeneratorButton extends Button {
 
     private final Generator generator;
+    private final FileConfig languageFile;
     private final UserController userController;
     private final GeneratorController generatorController;
     private final EconomyController economyController;
 
     public GeneratorButton(
             Generator generator,
+            FileConfig languageFile,
             UserController userController,
             GeneratorController generatorController,
             EconomyController economyController) {
+        this.languageFile = languageFile;
         this.generator = generator;
         this.userController = userController;
         this.generatorController = generatorController;
@@ -56,7 +61,7 @@ public class GeneratorButton extends Button {
 
         if (economyController.hasNotBalance(player, price)) {
             playFailure(player);
-            ChatUtil.sendMessage(player, "&cNo tienes suficiente dinero para comprar este generador.");
+            ChatUtil.sendMessage(player, languageFile.getString("generator-message.purchase.not-balance"));
             return;
         }
 
@@ -70,7 +75,9 @@ public class GeneratorButton extends Button {
 
         userController.saveUser(user);
 
-        ChatUtil.sendMessage(player, "&fCompraste un generador &e" + generator.getDisplayName() + " &fpor &a$" + generator.getPrice() + "&f.");
+        ChatUtil.sendMessage(player, languageFile.getString("generator-message.purchase.bought")
+                .replace("%generator-displayname%", generator.getDisplayName())
+                .replace("%generator-price%", CurrencyUtil.format(generator.getPrice())));
     }
 
     @Override
