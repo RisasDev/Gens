@@ -1,4 +1,13 @@
 generator-message:
+  placed: "&6&lGENERATORS &8» &7Has colocado un %generator-displayname% &7(%generators%/%max-generators%)"
+  collected: "&6&lGENERATORS &8» &7Has recogido un %generator-displayname% &7(%generators%/%max-generators%)"
+  upgrade: "&6&lGENERATORS &8» &7Has mejorado tu generador de %generator-displayname% &7a %next-generator-displayname%&7."
+  not-owned: "&6&lGENERATORS &8» &cEste generador no es tuyo."
+  max-level: "&6&lGENERATORS &8» &cEste generador ya esta en su nivel maximo."
+  reached-limit: "&6&lGENERATORS &8» &cHas alcanzado el limite de generadores que puedes colocar."
+  not-enough-balance: "&6&lGENERATORS &8» &cNo tienes el balance suficiente para mejorar este generador. ($%balance%/$%price%)"
+  consume-slot-item: "&6&lGENERATORS &8» &fHas incrementado tu limite de generadores a &a%max-generators% &fgeneradores."
+  consume-multiplier-item: "&6&lGENERATORS &8» &fHas incrementado tu multiplicador de ventas &ex%multiplier%&f."
 
 sell-message:
   nothing-to-sell: "&6&lGENERATORS &8» &cNo tienes objetos de generadores para vender."

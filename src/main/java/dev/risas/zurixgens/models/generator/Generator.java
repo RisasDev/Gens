@@ -83,7 +83,7 @@ public class Generator {
     }
 
     public String getNextUpgradeFormatted(Generator nextGenerator) {
-        return nextGenerator == null ? "&c&lMAXIMO" : nextGenerator.getUpdateFormatted();
+        return nextGenerator == null ? "&c&lMAXIMO" : "$" + nextGenerator.getUpdateFormatted();
     }
 
     public GeneratorDrop getRandomGeneratorDrop() {

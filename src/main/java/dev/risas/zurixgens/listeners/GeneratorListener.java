@@ -11,10 +11,7 @@ import dev.risas.zurixgens.models.generator.GeneratorPlayer;
 import dev.risas.zurixgens.models.generator.GeneratorSlotItem;
 import dev.risas.zurixgens.models.user.User;
 import dev.risas.zurixgens.ui.GeneratorRepairMenu;
-import dev.risas.zurixgens.utilities.ChatUtil;
-import dev.risas.zurixgens.utilities.FileConfig;
-import dev.risas.zurixgens.utilities.PersistentDataUtil;
-import dev.risas.zurixgens.utilities.PlayerUtil;
+import dev.risas.zurixgens.utilities.*;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -44,7 +41,7 @@ import org.bukkit.persistence.PersistentDataType;
 public class GeneratorListener implements Listener {
 
     private final ZurixGens plugin;
-    private final FileConfig configFile;
+    private final FileConfig configFile, languageFile;
     private final UserController userController;
     private final GeneratorController generatorController;
     private final EconomyController economyController;
@@ -53,12 +50,14 @@ public class GeneratorListener implements Listener {
     public GeneratorListener(
             ZurixGens plugin,
             FileConfig configFile,
+            FileConfig languageFile,
             UserController userController,
             GeneratorController generatorController,
             EconomyController economyController,
             EventController eventController) {
         this.plugin = plugin;
         this.configFile = configFile;
+        this.languageFile = languageFile;
         this.userController = userController;
         this.generatorController = generatorController;
         this.economyController = economyController;
@@ -87,7 +86,8 @@ public class GeneratorListener implements Listener {
         slotItem.incrementSlot(user, userController);
         PlayerUtil.decrementItem(player, itemStack);
 
-        ChatUtil.sendMessage(player, "&6&lGENERATORS &8» &fHas incrementado tu limite de generadores a &a" + user.getMaxGenerators() + " &fgeneradores.");
+        ChatUtil.sendMessage(player, languageFile.getString("generator-message.consume-slot-item")
+                .replace("%max-generators%", String.valueOf(user.getMaxGenerators())));
     }
 
     @EventHandler
@@ -112,7 +112,8 @@ public class GeneratorListener implements Listener {
         multiplierItem.incrementMultiplier(user, userController);
         PlayerUtil.decrementItem(player, itemStack);
 
-        ChatUtil.sendMessage(player, "&6&lGENERATORS &8» &fHas incrementado tu multiplicador de ventas &ex" + user.getMultiplierFormatted() + "&f.");
+        ChatUtil.sendMessage(player, languageFile.getString("generator-message.consume-multiplier-item")
+                .replace("%multiplier%", user.getMultiplierFormatted()));
     }
 
     @EventHandler
@@ -124,10 +125,10 @@ public class GeneratorListener implements Listener {
             user.startGeneratorTask(plugin, configFile, userController, generatorController, eventController);
         }
 
-        Generator generator = generatorController.getGenerator("pollo");
+        Generator generator = generatorController.getGenerator(configFile.getString("generator-system.starting-generator.name"));
         if (generator == null || user.isReceiveGenerator()) return;
 
-        player.getInventory().addItem(generator.getItem(generatorController, configFile.getInt("generator-system.starting-generators")));
+        player.getInventory().addItem(generator.getItem(generatorController, configFile.getInt("generator-system.starting-generator.amount")));
 
         user.setReceiveGenerator(true);
         userController.saveUser(user);
@@ -167,7 +168,7 @@ public class GeneratorListener implements Listener {
 
         if (user.hasReachedMaxGenerators()) {
             event.setCancelled(true);
-            ChatUtil.sendMessage(player, "&6&lGENERATORS &8» &cHas alcanzado el limite de generadores que puedes colocar.");
+            ChatUtil.sendMessage(player, languageFile.getString("generator-message.reached-limit"));
             return;
         }
 
@@ -180,8 +181,10 @@ public class GeneratorListener implements Listener {
             user.startGeneratorTask(plugin, configFile, userController, generatorController, eventController);
         }
 
-        ChatUtil.sendMessage(player, "&6&lGENERATORS &8» &7Has colocado un " + generator.getDisplayName() + " &7("
-                + user.getGeneratorCount() + "/" + user.getMaxGenerators() + ")");
+        ChatUtil.sendMessage(player, languageFile.getString("generator-message.placed")
+                .replace("%generator-displayname%", generator.getDisplayName())
+                .replace("%generators%", String.valueOf(user.getGeneratorCount()))
+                .replace("%max-generators%", String.valueOf(user.getMaxGenerators())));
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -211,7 +214,7 @@ public class GeneratorListener implements Listener {
         Player player = event.getPlayer();
 
         if (generatorPlayer.isNotOwned(player.getUniqueId())) {
-            ChatUtil.sendMessage(player, "&6&lGENERATORS &8» &cEste generador no es tuyo.");
+            ChatUtil.sendMessage(player, languageFile.getString("generator-message.not-owned"));
             return;
         }
 
@@ -229,31 +232,35 @@ public class GeneratorListener implements Listener {
                 user.stopGeneratorTask();
             }
 
-            ChatUtil.sendMessage(player, "&6&lGENERATORS &8» &7Has recogido un " + generatorPlayer.getGenerator().getDisplayName() + " &7("
-                    + user.getGeneratorCount() + "/" + user.getMaxGenerators() + ")");
+            ChatUtil.sendMessage(player, languageFile.getString("generator-message.collected")
+                    .replace("%generator-displayname%", generatorPlayer.getGenerator().getDisplayName())
+                    .replace("%generators%", String.valueOf(user.getGeneratorCount()))
+                    .replace("%max-generators%", String.valueOf(user.getMaxGenerators())));
         }
         else if (action == Action.RIGHT_CLICK_BLOCK && player.isSneaking()) {
             Generator nextGenerator = generatorController.getNextGenerator(generatorPlayer.getGenerator().getId());
 
             if (nextGenerator == null) {
                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 10.0F, 1.0F);
-                ChatUtil.sendMessage(player, "&6&lGENERATORS &8» &cEste generador ya esta en su nivel maximo.");
+                ChatUtil.sendMessage(player, languageFile.getString("generator-message.max-level"));
                 return;
             }
 
             double price = nextGenerator.getPrice();
 
             if (economyController.hasNotBalance(player, price)) {
-                ChatUtil.sendMessage(player, "&6&lGENERATORS &8» &cNo tienes el balance suficiente para mejorar este generador. ($" +
-                        + economyController.getBalance(player) + "/$" + price + ")");
+                ChatUtil.sendMessage(player, languageFile.getString("generator-message.not-enough-balance")
+                        .replace("%balance%", CurrencyUtil.format(economyController.getBalance(player)))
+                        .replace("%price%", CurrencyUtil.format(price)));
                 return;
             }
 
             economyController.removeBalance(player, price);
 
             player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 10.0F, 1.0F);
-            ChatUtil.sendMessage(player, "&6&lGENERATORS &8» &7Has mejorado tu generador de " + generatorPlayer.getGenerator().getDisplayName()
-                    + " &7a " + nextGenerator.getDisplayName() + "&7.");
+            ChatUtil.sendMessage(player, languageFile.getString("generator-message.upgrade")
+                    .replace("%generator-displayname%", generatorPlayer.getGenerator().getDisplayName())
+                    .replace("%next-generator-displayname%", nextGenerator.getDisplayName()));
 
             generatorPlayer.upgrade(nextGenerator);
             generatorController.saveGeneratorPlayer(generatorPlayer, false);
