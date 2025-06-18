@@ -138,7 +138,6 @@ public class GeneratorListener implements Listener {
         Player player = event.getPlayer();
         User user = userController.getUser(player.getUniqueId());
         if (user == null) return;
-        System.out.println("user: " + user.getName());
 
         user.stopGeneratorTask();
     }
@@ -241,6 +240,16 @@ public class GeneratorListener implements Listener {
                 ChatUtil.sendMessage(player, "&6&lGENERATORS &8» &cEste generador ya esta en su nivel maximo.");
                 return;
             }
+
+            double price = nextGenerator.getPrice();
+
+            if (economyController.hasNotBalance(player, price)) {
+                ChatUtil.sendMessage(player, "&6&lGENERATORS &8» &cNo tienes el balance suficiente para mejorar este generador. ($" +
+                        + economyController.getBalance(player) + "/$" + price + ")");
+                return;
+            }
+
+            economyController.removeBalance(player, price);
 
             player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 10.0F, 1.0F);
             ChatUtil.sendMessage(player, "&6&lGENERATORS &8» &7Has mejorado tu generador de " + generatorPlayer.getGenerator().getDisplayName()

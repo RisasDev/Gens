@@ -7,6 +7,7 @@ import dev.risas.zurixgens.controllers.EconomyController;
 import dev.risas.zurixgens.controllers.EventController;
 import dev.risas.zurixgens.controllers.GeneratorController;
 import dev.risas.zurixgens.controllers.UserController;
+import dev.risas.zurixgens.integrations.PlaceholderAPIHook;
 import dev.risas.zurixgens.listeners.GeneratorListener;
 import dev.risas.zurixgens.listeners.MenuListener;
 import dev.risas.zurixgens.listeners.UserListener;
@@ -43,14 +44,18 @@ public class ZurixGens extends JavaPlugin {
 
         this.getCommand("generator").setExecutor(new GeneratorCommand(this, userController, generatorController, economyController));
         this.getCommand("generator").setTabCompleter(new GeneratorCommand(this, userController, generatorController, economyController));
-        this.getCommand("sell").setExecutor(new SellCommand(configFile, userController, economyController, eventController));
-        this.getCommand("statistic").setExecutor(new StatisticCommand(userController));
+        this.getCommand("sell").setExecutor(new SellCommand(configFile, languageFile, userController, economyController, eventController));
+        this.getCommand("statistic").setExecutor(new StatisticCommand(languageFile, userController));
+
+        PlaceholderAPIHook.initialize(this, userController, eventController);
     }
 
     public void onReload() {
         this.configFile.reload();
+        this.languageFile.reload();
         this.generatorsFile.reload();
         this.generatorController.onReload();
+        this.eventController.onReload();
     }
 
     public static ZurixGens getInstance() {

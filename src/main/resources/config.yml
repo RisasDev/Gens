@@ -49,3 +49,6 @@ event-system:
     double_glow_chance:
       name: "x2 Probabilidad Brillante"
       duration: 60
+sound-system:
+  event-start-sound: "ENTITY_PLAYER_LEVELUP"
+  event-end-sound: "ENTITY_PLAYER_LEVELUP"

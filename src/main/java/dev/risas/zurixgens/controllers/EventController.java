@@ -6,6 +6,7 @@ import dev.risas.zurixgens.tasks.EventTask;
 import dev.risas.zurixgens.tasks.EventEndTask;
 import dev.risas.zurixgens.utilities.ChatUtil;
 import dev.risas.zurixgens.utilities.FileConfig;
+import dev.risas.zurixgens.utilities.PlayerUtil;
 import lombok.Getter;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -59,17 +60,27 @@ public class EventController {
     public void startEvent(EventType eventType) {
         this.event = eventType;
 
-        for (String message : languageFile.getStringList("event-message." + eventType.name().toLowerCase() + ".start")) {
+        String eventId = eventType.name().toLowerCase();
+
+        PlayerUtil.sendAllSound(configFile.getString("sound-system.event-start-sound"));
+        PlayerUtil.sendAllTitle(languageFile.getStringList("event-message." + eventId + ".start.title"));
+
+        for (String message : languageFile.getStringList("event-message." + eventId + ".start.message")) {
             ChatUtil.sendBroadcast(message);
         }
 
-        this.eventEndTask.start();
         this.eventEndTask = new EventEndTask(plugin, this, eventType.getDuration());
+        this.eventEndTask.start();
     }
 
     public void stopEvent() {
         if (this.eventEndTask != null) {
-            for (String message : languageFile.getStringList("event-message." + event.name().toLowerCase() + ".stop")) {
+            String eventId = event.name().toLowerCase();
+
+            PlayerUtil.sendAllSound(configFile.getString("sound-system.event-end-sound"));
+            PlayerUtil.sendAllTitle(languageFile.getStringList("event-message." + eventId + ".stop.title"));
+
+            for (String message : languageFile.getStringList("event-message." + eventId + ".stop.message")) {
                 ChatUtil.sendBroadcast(message);
             }
 

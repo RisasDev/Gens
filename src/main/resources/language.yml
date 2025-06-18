@@ -1,69 +1,117 @@
+generator-message:
+
+sell-message:
+  nothing-to-sell: "&6&lGENERATORS &8» &cNo tienes objetos de generadores para vender."
+  sold: "&6&lGENERATORS &8» &fHas vendido los objetos de tus generadores por &a$%earned%&f."
+
+statistic-message:
+  - "&7&m---------------------------------------------"
+  - "&6&lStatistics"
+  - ""
+  - " &7● &fTotal Items: &e%total-items%"
+  - " &7● &fTotal Enchanted Items: &e%total-enchanted-items%"
+  - " &7● &fTotal Glow Items: &e%total-glow-items%"
+  - " &7● &fTotal Purchases: &e%total-purchases%"
+  - "&7&m---------------------------------------------"
+
 event-message:
   double_value:
     start:
-      - "&7&m-------------------------------------"
-      - "          &2&lEVENTO EN CURSO"
-      - "          &ax2 Valor &7(3 minutos)"
-      - ""
-      - "          &fEl precio de venta de los objetos"
-      - "          &fes 2 veces mayor que lo normal."
-      - "&7&m-------------------------------------"
+      title:
+        - "&2&lEVENTO EN CURSO"
+        - "&ax2 Valor &7(3 minutos)"
+      message:
+        - "&7&m-------------------------------------"
+        - "          &2&lEVENTO EN CURSO"
+        - "          &ax2 Valor &7(3 minutos)"
+        - ""
+        - "          &fEl precio de venta de los objetos"
+        - "          &fes 2 veces mayor que lo normal."
+        - "&7&m-------------------------------------"
     stop:
-      - "&7&m-------------------------------------"
-      - "          &4&lEVENTO FINALIZADO"
-      - "          &4x2 Valor &7(Sig: 10m)"
-      - ""
-      - "          &fEl precio de venta de los objetos"
-      - "          &fvuelve a la normalidad."
-      - "&7&m-------------------------------------"
+      title:
+        - "&4&lEVENTO FINALIZADO"
+        - "&4x2 Valor &7(Sig: 10m)"
+      message:
+        - "&7&m-------------------------------------"
+        - "          &4&lEVENTO FINALIZADO"
+        - "          &4x2 Valor &7(Sig: 10m)"
+        - ""
+        - "          &fEl precio de venta de los objetos"
+        - "          &fvuelve a la normalidad."
+        - "&7&m-------------------------------------"
   double_speed:
     start:
-      - "&7&m-------------------------------------"
-      - "          &2&lEVENTO EN CURSO"
-      - "          &ax2 Velocidad &7(3 minutos)"
-      - ""
-      - "          &fLa velocidad de los generadores"
-      - "          &fes 2 veces mayor que lo normal."
-      - "&7&m-------------------------------------"
+      title:
+        - "&2&lEVENTO EN CURSO"
+        - "&ax2 Velocidad &7(3 minutos)"
+      message:
+        - "&7&m-------------------------------------"
+        - "          &2&lEVENTO EN CURSO"
+        - "          &ax2 Velocidad &7(3 minutos)"
+        - ""
+        - "          &fLa velocidad de los generadores"
+        - "          &fes 2 veces mayor que lo normal."
+        - "&7&m-------------------------------------"
     stop:
-      - "&7&m-------------------------------------"
-      - "          &4&lEVENTO FINALIZADO"
-      - "          &4x2 Velocidad &7(Sig: 10m)"
-      - ""
-      - "          &fLa velocidad de los generadores"
-      - "          &fvuelve a la normalidad."
-      - "&7&m-------------------------------------"
+      title:
+        - "&4&lEVENTO FINALIZADO"
+        - "&4x2 Velocidad &7(Sig: 10m)"
+      message:
+        - "&7&m-------------------------------------"
+        - "          &4&lEVENTO FINALIZADO"
+        - "          &4x2 Velocidad &7(Sig: 10m)"
+        - ""
+        - "          &fLa velocidad de los generadores"
+        - "          &fvuelve a la normalidad."
+        - "&7&m-------------------------------------"
   double_enchanted_chance:
     start:
-      - "&7&m-------------------------------------"
-      - "          &2&lEVENTO EN CURSO"
-      - "          &ax2 Probabilidad Encantada &7(3 minutos)"
-      - ""
-      - "          &fLa probabilidad de que los drops"
-      - "          &fsean encantados es 2 veces mayor."
-      - "&7&m-------------------------------------"
+      title:
+        - "&2&lEVENTO EN CURSO"
+        - "&ax2 Probabilidad Encantada &7(3 minutos)"
+      message:
+        - "&7&m-------------------------------------"
+        - "          &2&lEVENTO EN CURSO"
+        - "          &ax2 Probabilidad Encantada &7(3 minutos)"
+        - ""
+        - "          &fLa probabilidad de que los drops"
+        - "          &fsean encantados es 2 veces mayor."
+        - "&7&m-------------------------------------"
     stop:
-      - "&7&m-------------------------------------"
-      - "          &4&lEVENTO FINALIZADO"
-      - "          &4x2 Probabilidad Encantada &7(Sig: 10m)"
-      - ""
-      - "          &fLa probabilidad de que los drops"
-      - "          &fsean encantados vuelve a la normalidad."
-      - "&7&m-------------------------------------"
+      title:
+        - "&4&lEVENTO FINALIZADO"
+        - "&4x2 Probabilidad Encantada &7(Sig: 10m)"
+      message:
+        - "&7&m-------------------------------------"
+        - "          &4&lEVENTO FINALIZADO"
+        - "          &4x2 Probabilidad Encantada &7(Sig: 10m)"
+        - ""
+        - "          &fLa probabilidad de que los drops"
+        - "          &fsean encantados vuelve a la normalidad."
+        - "&7&m-------------------------------------"
   double_glow_chance:
     start:
-      - "&7&m-------------------------------------"
-      - "          &2&lEVENTO EN CURSO"
-      - "          &ax2 Probabilidad Brillante &7(3 minutos)"
-      - ""
-      - "          &fLa probabilidad de que los drops"
-      - "          &fsean brillantes es 2 veces mayor."
-      - "&7&m-------------------------------------"
+      title:
+        - "&2&lEVENTO EN CURSO"
+        - "&ax2 Probabilidad Brillante &7(3 minutos)"
+      message:
+        - "&7&m-------------------------------------"
+        - "          &2&lEVENTO EN CURSO"
+        - "          &ax2 Probabilidad Brillante &7(3 minutos)"
+        - ""
+        - "          &fLa probabilidad de que los drops"
+        - "          &fsean brillantes es 2 veces mayor."
+        - "&7&m-------------------------------------"
     stop:
-      - "&7&m-------------------------------------"
-      - "          &4&lEVENTO FINALIZADO"
-      - "          &4x2 Probabilidad Brillante &7(Sig: 10m)"
-      - ""
-      - "          &fLa probabilidad de que los drops"
-      - "          &fsean brillantes vuelve a la normalidad."
-      - "&7&m-------------------------------------"
+      title:
+        - "&4&lEVENTO FINALIZADO"
+        - "&4x2 Probabilidad Brillante &7(Sig: 10m)"
+      message:
+        - "&7&m-------------------------------------"
+        - "          &4&lEVENTO FINALIZADO"
+        - "          &4x2 Probabilidad Brillante &7(Sig: 10m)"
+        - ""
+        - "          &fLa probabilidad de que los drops"
+        - "          &fsean brillantes vuelve a la normalidad."
+        - "&7&m-------------------------------------"

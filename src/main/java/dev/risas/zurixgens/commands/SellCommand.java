@@ -13,6 +13,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
@@ -24,13 +25,19 @@ import org.jetbrains.annotations.NotNull;
  */
 public class SellCommand implements CommandExecutor {
 
-    private final FileConfig configFile;
+    private final FileConfig configFile, languageFile;
     private final UserController userController;
     private final EconomyController economyController;
     private final EventController eventController;
 
-    public SellCommand(FileConfig configFile, UserController userController, EconomyController economyController, EventController eventController) {
+    public SellCommand(
+            FileConfig configFile,
+            FileConfig languageFile,
+            UserController userController,
+            EconomyController economyController,
+            EventController eventController) {
         this.configFile = configFile;
+        this.languageFile = languageFile;
         this.userController = userController;
         this.economyController = economyController;
         this.eventController = eventController;
@@ -50,6 +57,9 @@ public class SellCommand implements CommandExecutor {
 
         for (ItemStack itemStack : player.getInventory().getStorageContents()) {
             if (itemStack == null) continue;
+
+            ItemMeta itemMeta = itemStack.getItemMeta();
+            if (itemMeta == null) continue;
 
             PersistentDataContainer persistentDataContainer = itemStack.getItemMeta().getPersistentDataContainer();
             if (!persistentDataContainer.has(PersistentDataUtil.GENERATOR_DROP_ID, PersistentDataType.STRING)) continue;
@@ -77,7 +87,7 @@ public class SellCommand implements CommandExecutor {
         }
 
         if (totalSell == 0) {
-            ChatUtil.sendMessage(sender, "&6&lGENERATORS &8» &cNo tienes objetos de generadores para vender.");
+            ChatUtil.sendMessage(sender, languageFile.getString("sell-message.nothing-to-sell"));
             return true;
         }
 
@@ -85,11 +95,12 @@ public class SellCommand implements CommandExecutor {
         double multiplier = user.getMultiplier();
 
         if (multiplier > 0) {
-            totalSell *= multiplier;
+            totalSell = totalSell * (1 + multiplier);
         }
 
         economyController.giveBalance(player, totalSell);
-        ChatUtil.sendMessage(sender, "&6&lGENERATORS &8» &fHas vendido los objetos de tus generadores por &a$" + CurrencyUtil.format(totalSell) + "&f.");
+        ChatUtil.sendMessage(sender, languageFile.getString("sell-message.sold")
+                .replace("%earned%", CurrencyUtil.format(totalSell)));
         return false;
     }
 }
