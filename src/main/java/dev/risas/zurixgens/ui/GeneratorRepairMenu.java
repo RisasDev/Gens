@@ -42,7 +42,7 @@ public class GeneratorRepairMenu extends Menu {
     }
 
     @Override
-    public Map<Integer, Button> getButtons(Player player) {
+    public Map<Integer, Button> getButtons() {
         Map<Integer, Button> buttons = new HashMap<>();
 
         buttons.put(getSize() - 5, new GeneratorRepairButton(generatorPlayer, languageFile, generatorController, economyController));

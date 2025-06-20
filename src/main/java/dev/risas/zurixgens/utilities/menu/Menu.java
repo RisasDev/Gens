@@ -29,7 +29,9 @@ public abstract class Menu {
     }
 
     public void open() {
-        this.buttons = this.getButtons(player);
+        this.buttons = this.getButtons();
+
+        inventory.clear();
 
         for (Map.Entry<Integer, Button> entry : buttons.entrySet()) {
             inventory.setItem(entry.getKey(), entry.getValue().getItemStack(player));
@@ -56,7 +58,7 @@ public abstract class Menu {
         return (int) (Math.ceil((highest + 1) / 9D) * 9D);
     }
 
-    public abstract Map<Integer, Button> getButtons(Player player);
+    public abstract Map<Integer, Button> getButtons();
 
     public int getSize() {
         return inventory.getSize();

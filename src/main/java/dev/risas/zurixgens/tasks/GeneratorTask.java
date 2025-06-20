@@ -17,7 +17,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class GeneratorTask extends BukkitRunnable {
 
     private final ZurixGens plugin;
-    private final FileConfig configFile;
+    private final FileConfig configFile, generatorsDataFile;
     private final User user;
     private final UserController userController;
     private final GeneratorController generatorController;
@@ -26,12 +26,14 @@ public class GeneratorTask extends BukkitRunnable {
     public GeneratorTask(
             ZurixGens plugin,
             FileConfig configFile,
+            FileConfig generatorsDataFile,
             User user,
             UserController userController,
             GeneratorController generatorController,
             EventController eventController) {
         this.plugin = plugin;
         this.configFile = configFile;
+        this.generatorsDataFile = generatorsDataFile;
         this.user = user;
         this.userController = userController;
         this.generatorController = generatorController;
@@ -51,10 +53,12 @@ public class GeneratorTask extends BukkitRunnable {
             generateItem++;
 
             generatorPlayer.generateDrop(configFile, user, eventController);
-            generatorController.saveGeneratorPlayer(generatorPlayer, false);
+            generatorController.saveGeneratorPlayer(generatorPlayer, false, false);
         }
 
         if (generateItem > 0) {
+            generatorsDataFile.save();
+
             user.addTotalItems(generateItem);
             userController.saveUser(user);
         }

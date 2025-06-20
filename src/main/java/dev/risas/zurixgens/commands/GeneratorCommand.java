@@ -29,7 +29,7 @@ import java.util.stream.Stream;
  */
 public class GeneratorCommand implements CommandExecutor, TabCompleter {
 
-    private final FileConfig languageFile;
+    private final FileConfig languageFile, menusFile;
     private final UserController userController;
     private final GeneratorController generatorController;
     private final EconomyController economyController;
@@ -39,6 +39,7 @@ public class GeneratorCommand implements CommandExecutor, TabCompleter {
     public GeneratorCommand(
             ZurixGens plugin,
             FileConfig languageFile,
+            FileConfig menusFile,
             UserController userController,
             GeneratorController generatorController,
             EconomyController economyController) {
@@ -49,6 +50,7 @@ public class GeneratorCommand implements CommandExecutor, TabCompleter {
                 Map.entry("reload", new GeneratorReloadCommand(plugin))
         );
         this.languageFile = languageFile;
+        this.menusFile = menusFile;
         this.userController = userController;
         this.generatorController = generatorController;
         this.economyController = economyController;
@@ -58,7 +60,7 @@ public class GeneratorCommand implements CommandExecutor, TabCompleter {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 0) {
             if (sender instanceof Player player) {
-                GeneratorMenu menu = new GeneratorMenu(player, languageFile, userController, generatorController, economyController);
+                GeneratorMenu menu = new GeneratorMenu(player, languageFile, menusFile, userController, generatorController, economyController);
                 menu.open();
                 return true;
             }

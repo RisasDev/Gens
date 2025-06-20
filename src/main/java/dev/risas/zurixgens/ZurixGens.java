@@ -1,8 +1,6 @@
 package dev.risas.zurixgens;
 
-import dev.risas.zurixgens.commands.GeneratorCommand;
-import dev.risas.zurixgens.commands.SellCommand;
-import dev.risas.zurixgens.commands.StatisticCommand;
+import dev.risas.zurixgens.commands.*;
 import dev.risas.zurixgens.controllers.EconomyController;
 import dev.risas.zurixgens.controllers.EventController;
 import dev.risas.zurixgens.controllers.GeneratorController;
@@ -19,7 +17,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 @Getter
 public class ZurixGens extends JavaPlugin {
 
-    private FileConfig configFile, languageFile, generatorsFile, generatorsDataFile;
+    private FileConfig configFile,
+            languageFile,
+            menusFile,
+            generatorsFile,
+            generatorsDataFile;
     private GeneratorController generatorController;
     private UserController userController;
     private EconomyController economyController;
@@ -29,23 +31,27 @@ public class ZurixGens extends JavaPlugin {
     public void onEnable() {
         this.configFile = new FileConfig(this, "config.yml");
         this.languageFile = new FileConfig(this, "language.yml");
+        this.menusFile = new FileConfig(this, "menus.yml");
         this.generatorsFile = new FileConfig(this, "generators.yml");
         this.generatorsDataFile = new FileConfig(this, "data/generators-data.yml");
 
         this.generatorController = new GeneratorController(configFile, generatorsFile, generatorsDataFile);
-        this.userController = new UserController(this, generatorController);
+        this.userController = new UserController(this, configFile, generatorController);
         this.economyController = new EconomyController();
         this.eventController = new EventController(this, configFile, languageFile);
 
         PluginManager pluginManager = getServer().getPluginManager();
         pluginManager.registerEvents(new UserListener(userController), this);
         pluginManager.registerEvents(new MenuListener(), this);
-        pluginManager.registerEvents(new GeneratorListener(this, configFile, languageFile, userController, generatorController, economyController, eventController), this);
+        pluginManager.registerEvents(new GeneratorListener(this, configFile, languageFile, generatorsDataFile, userController, generatorController, economyController, eventController), this);
 
-        this.getCommand("generator").setExecutor(new GeneratorCommand(this, languageFile, userController, generatorController, economyController));
-        this.getCommand("generator").setTabCompleter(new GeneratorCommand(this, languageFile, userController, generatorController, economyController));
+        this.getCommand("generator").setExecutor(new GeneratorCommand(this, languageFile, menusFile, userController, generatorController, economyController));
+        this.getCommand("generator").setTabCompleter(new GeneratorCommand(this, languageFile, menusFile, userController, generatorController, economyController));
         this.getCommand("sell").setExecutor(new SellCommand(configFile, languageFile, userController, economyController, eventController));
         this.getCommand("statistic").setExecutor(new StatisticCommand(languageFile, userController));
+        this.getCommand("event").setExecutor(new EventCommand(eventController));
+        this.getCommand("event").setTabCompleter(new EventCommand(eventController));
+        this.getCommand("pickupgens").setExecutor(new PickupGensCommand(userController, generatorController));
 
         PlaceholderAPIHook.initialize(this, userController, eventController);
     }
@@ -53,6 +59,7 @@ public class ZurixGens extends JavaPlugin {
     public void onReload() {
         this.configFile.reload();
         this.languageFile.reload();
+        this.menusFile.reload();
         this.generatorsFile.reload();
         this.generatorController.onReload();
         this.eventController.onReload();

@@ -87,7 +87,7 @@ public class GeneratorController {
 
         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 10.0F, 1.0F);
 
-        saveGeneratorPlayer(generatorPlayer, false);
+        saveGeneratorPlayer(generatorPlayer, false, true);
     }
 
     public void removeGeneratorPlayer(
@@ -103,10 +103,25 @@ public class GeneratorController {
                 generatorPlayer.getGenerator().getItem(this, 1));
         player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, 10.0F, 1.0F);
 
-        saveGeneratorPlayer(generatorPlayer, true);
+        saveGeneratorPlayer(generatorPlayer, true, true);
     }
 
-    public void saveGeneratorPlayer(GeneratorPlayer generatorPlayer, boolean delete) {
+    public void removeAllGeneratorPlayer(Player player,List<GeneratorPlayer> generators) {
+        for (GeneratorPlayer generatorPlayer : generators) {
+            Location location = generatorPlayer.getLocation();
+
+            generatorPlayers.remove(location);
+            location.getBlock().setType(Material.AIR);
+
+            player.getInventory().addItem(generatorPlayer.getGenerator().getItem(this, 1));
+            saveGeneratorPlayer(generatorPlayer, true, false);
+        }
+
+        player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, 10.0F, 1.0F);
+        generatorsDataFile.save();
+    }
+
+    public void saveGeneratorPlayer(GeneratorPlayer generatorPlayer, boolean delete, boolean saveToFile) {
         ConfigurationSection section = generatorsDataFile.getConfiguration();
         if (section == null) throw new IllegalStateException("Generators data section cannot be null");
 
@@ -122,7 +137,7 @@ public class GeneratorController {
             section.set(location + ".generationCount", generatorPlayer.getGenerationCount());
         }
 
-        generatorsDataFile.save();
+        if (saveToFile) generatorsDataFile.save();
     }
 
     public void onLoad() {

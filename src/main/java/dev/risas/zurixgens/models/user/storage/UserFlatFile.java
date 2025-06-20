@@ -12,16 +12,27 @@ import java.util.UUID;
 public class UserFlatFile implements IUser {
 
     private final ZurixGens plugin;
+    private final FileConfig configFile;
     private final GeneratorController generatorController;
 
-    public UserFlatFile(ZurixGens plugin, GeneratorController generatorController) {
+    public UserFlatFile(ZurixGens plugin, FileConfig configFile, GeneratorController generatorController) {
         this.plugin = plugin;
+        this.configFile = configFile;
         this.generatorController = generatorController;
     }
 
     @Override
     public User createUser(UUID uuid, String name) {
-        return new User(plugin, uuid, name);
+        FileConfig dataFile = new FileConfig(plugin, "data/user-data/" + uuid.toString() + ".yml");
+
+        return dataFile.getConfiguration().getKeys(false).isEmpty() ?
+                new User(
+                        uuid,
+                        name,
+                        dataFile,
+                        configFile.getInt("generator-system.starting.max-generators"),
+                        configFile.getDouble("generator-system.starting.multiplier")) :
+                new User(uuid, name, dataFile);
     }
 
     @Override

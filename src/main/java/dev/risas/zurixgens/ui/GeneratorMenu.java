@@ -6,7 +6,7 @@ import dev.risas.zurixgens.controllers.UserController;
 import dev.risas.zurixgens.ui.buttons.GeneratorButton;
 import dev.risas.zurixgens.utilities.FileConfig;
 import dev.risas.zurixgens.utilities.menu.Button;
-import dev.risas.zurixgens.utilities.menu.Menu;
+import dev.risas.zurixgens.utilities.menu.PaginatedMenu;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -17,7 +17,7 @@ import java.util.Map;
  * @date 17-06-2025
  * @discord https://risas.me/discord
  */
-public class GeneratorMenu extends Menu {
+public class GeneratorMenu extends PaginatedMenu {
 
     private final FileConfig languageFile;
     private final UserController userController;
@@ -27,13 +27,16 @@ public class GeneratorMenu extends Menu {
     public GeneratorMenu(
             Player player,
             FileConfig languageFile,
+            FileConfig menusFile,
             UserController userController,
             GeneratorController generatorController,
             EconomyController economyController) {
         super(
                 player,
-                "Generators",
-                6
+                menusFile.getString("shop-menu.title"),
+                menusFile.getInt("shop-menu.rows"),
+                menusFile.getInt("shop-menu.max-items"),
+                menusFile, "shop-menu.decorations"
         );
         this.languageFile = languageFile;
         this.userController = userController;
@@ -42,12 +45,17 @@ public class GeneratorMenu extends Menu {
     }
 
     @Override
-    public Map<Integer, Button> getButtons(Player player) {
+    public Map<Integer, Button> getAllPagesButtons() {
         Map<Integer, Button> buttons = new HashMap<>();
 
         generatorController.getGenerators().forEach(generator ->
                 buttons.put(buttons.size(), new GeneratorButton(generator, languageFile, userController, generatorController, economyController)));
 
         return buttons;
+    }
+
+    @Override
+    public boolean isUpdateAfterClick() {
+        return false;
     }
 }

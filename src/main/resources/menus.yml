@@ -1,0 +1,11 @@
+shop-menu:
+  title: "Generator Shop"
+  rows: 4
+  max-items: 14
+  decorations:
+    0-8;9;17;18;26;28-34:
+      head: ""
+      name: "&7 "
+      lore: {}
+      material: "GRAY_STAINED_GLASS_PANE"
+      enchanted: false

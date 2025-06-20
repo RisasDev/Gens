@@ -70,7 +70,7 @@ public class GeneratorRepairButton extends Button {
         player.closeInventory();
 
         generatorPlayer.repair();
-        generatorController.saveGeneratorPlayer(generatorPlayer, false);
+        generatorController.saveGeneratorPlayer(generatorPlayer, false, true);
 
         economyController.removeBalance(player, repairCost);
         ChatUtil.sendMessage(player, languageFile.getString("generator-message.repair.repaired"));

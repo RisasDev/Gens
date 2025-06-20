@@ -30,14 +30,23 @@ public class User {
 
     private int totalItems, totalEnchantedItems, totalGlowItems, totalPurchases;
 
-    public User(ZurixGens plugin, UUID uuid, String name) {
+    public User(UUID uuid, String name, FileConfig dataFile) {
         this.uuid = uuid;
         this.name = name;
         this.lowerName = name.toLowerCase();
-        this.dataFile = new FileConfig(plugin, "data/user-data/" + uuid.toString() + ".yml");
+        this.dataFile = dataFile;
+    }
+
+    public User(
+            UUID uuid,
+            String name,
+            FileConfig dataFile,
+            int maxGenerators,
+            double multiplier) {
+        this(uuid, name, dataFile);
         this.generators = new ArrayList<>();
-        this.maxGenerators = 30;
-        this.multiplier = 0;
+        this.maxGenerators = maxGenerators;
+        this.multiplier = multiplier;
     }
 
     public Set<GeneratorPlayer> getAliveGenerators() {
@@ -98,6 +107,7 @@ public class User {
     public void startGeneratorTask(
             ZurixGens plugin,
             FileConfig configFile,
+            FileConfig generatorsDataFile,
             UserController userController,
             GeneratorController generatorController,
             EventController eventController) {
@@ -108,6 +118,7 @@ public class User {
         generatorTask = new GeneratorTask(
                 plugin,
                 configFile,
+                generatorsDataFile,
                 this,
                 userController,
                 generatorController,

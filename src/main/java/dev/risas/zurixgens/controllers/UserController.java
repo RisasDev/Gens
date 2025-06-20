@@ -4,6 +4,7 @@ import dev.risas.zurixgens.ZurixGens;
 import dev.risas.zurixgens.models.user.IUser;
 import dev.risas.zurixgens.models.user.User;
 import dev.risas.zurixgens.models.user.storage.UserFlatFile;
+import dev.risas.zurixgens.utilities.FileConfig;
 import lombok.Getter;
 
 import java.util.Map;
@@ -18,10 +19,10 @@ public class UserController {
     private final IUser user;
     private final Map<UUID, User> users;
 
-    public UserController(ZurixGens plugin, GeneratorController generatorController) {
+    public UserController(ZurixGens plugin, FileConfig configFile, GeneratorController generatorController) {
         this.plugin = plugin;
         this.users = new ConcurrentHashMap<>();
-        this.user = new UserFlatFile(plugin, generatorController);
+        this.user = new UserFlatFile(plugin, configFile, generatorController);
     }
 
     public User getUser(UUID uuid) {

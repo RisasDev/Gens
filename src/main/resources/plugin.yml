@@ -4,6 +4,7 @@ main: dev.risas.zurixgens.ZurixGens
 api-version: '1.13'
 author: Risas
 depend: [Vault]
+softdepend: [SuperiorSkyblock2]
 commands:
   generator:
     description: "Generator Command"
@@ -14,3 +15,8 @@ commands:
   statistic:
     description: "Statistic Command"
     aliases: ["stats", "stat", "statistics", "estadisticas"]
+  event:
+    description: "Event Command"
+    permission: "zurixgens.command.event"
+  pickupgens:
+    description: "Pickup Gens Command"

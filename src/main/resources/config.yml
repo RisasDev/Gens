@@ -1,7 +1,10 @@
 generator-system:
-  starting-generator:
-    name: "pollo"
-    amount: 30
+  starting:
+    generator:
+      name: "pollo"
+      amount: 30
+    max-generators: 30
+    multiplier: 0.0
   break-chance: 0.1
   break-generation: 1000
   drop-multiplier:

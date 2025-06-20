@@ -41,7 +41,7 @@ import org.bukkit.persistence.PersistentDataType;
 public class GeneratorListener implements Listener {
 
     private final ZurixGens plugin;
-    private final FileConfig configFile, languageFile;
+    private final FileConfig configFile, languageFile, generatorsDataFile;
     private final UserController userController;
     private final GeneratorController generatorController;
     private final EconomyController economyController;
@@ -51,6 +51,7 @@ public class GeneratorListener implements Listener {
             ZurixGens plugin,
             FileConfig configFile,
             FileConfig languageFile,
+            FileConfig generatorsDataFile,
             UserController userController,
             GeneratorController generatorController,
             EconomyController economyController,
@@ -58,6 +59,7 @@ public class GeneratorListener implements Listener {
         this.plugin = plugin;
         this.configFile = configFile;
         this.languageFile = languageFile;
+        this.generatorsDataFile = generatorsDataFile;
         this.userController = userController;
         this.generatorController = generatorController;
         this.economyController = economyController;
@@ -122,13 +124,18 @@ public class GeneratorListener implements Listener {
         User user = userController.getUser(player.getUniqueId());
 
         if (!user.getAliveGenerators().isEmpty()) {
-            user.startGeneratorTask(plugin, configFile, userController, generatorController, eventController);
+            GeneratorPlayer generatorPlayer = user.getGenerators().get(0);
+            World generatorWorld = generatorPlayer.getLocation().getWorld();
+
+            if (generatorWorld != null && generatorWorld.equals(player.getWorld())) {
+                user.startGeneratorTask(plugin, configFile, generatorsDataFile, userController, generatorController, eventController);
+            }
         }
 
-        Generator generator = generatorController.getGenerator(configFile.getString("generator-system.starting-generator.name"));
+        Generator generator = generatorController.getGenerator(configFile.getString("generator-system.starting.generator.name"));
         if (generator == null || user.isReceiveGenerator()) return;
 
-        player.getInventory().addItem(generator.getItem(generatorController, configFile.getInt("generator-system.starting-generator.amount")));
+        player.getInventory().addItem(generator.getItem(generatorController, configFile.getInt("generator-system.starting.generator.amount")));
 
         user.setReceiveGenerator(true);
         userController.saveUser(user);
@@ -178,7 +185,7 @@ public class GeneratorListener implements Listener {
         generatorController.addGeneratorPlayer(user, player, generatorPlayer, location);
 
         if (!user.isGeneratorTaskRunning()) {
-            user.startGeneratorTask(plugin, configFile, userController, generatorController, eventController);
+            user.startGeneratorTask(plugin, configFile, generatorsDataFile, userController, generatorController, eventController);
         }
 
         ChatUtil.sendMessage(player, languageFile.getString("generator-message.placed")
@@ -263,7 +270,7 @@ public class GeneratorListener implements Listener {
                     .replace("%next-generator-displayname%", nextGenerator.getDisplayName()));
 
             generatorPlayer.upgrade(nextGenerator);
-            generatorController.saveGeneratorPlayer(generatorPlayer, false);
+            generatorController.saveGeneratorPlayer(generatorPlayer, false, true);
         }
     }
 
@@ -271,18 +278,16 @@ public class GeneratorListener implements Listener {
     public void onGeneratorWorldChange(PlayerChangedWorldEvent event) {
         Player player = event.getPlayer();
         User user = userController.getUser(player.getUniqueId());
-        if (user == null) return;
+        if (user == null || user.getGenerators().isEmpty()) return;
 
         GeneratorPlayer generatorPlayer = user.getGenerators().get(0);
-        if (generatorPlayer == null) return;
-
         World generatorWorld = generatorPlayer.getLocation().getWorld();
         if (generatorWorld == null) return;
 
         World currentWorld = player.getWorld();
 
         if (currentWorld.equals(generatorWorld) && !user.isGeneratorTaskRunning()) {
-            user.startGeneratorTask(plugin, configFile, userController, generatorController, eventController);
+            user.startGeneratorTask(plugin, configFile, generatorsDataFile, userController, generatorController, eventController);
         }
         else if (!currentWorld.equals(generatorWorld) && user.isGeneratorTaskRunning()) {
             user.stopGeneratorTask();
